@@ -1,0 +1,155 @@
+package codigo;
+
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+}
+:};
+
+terminal Comillas, Pckg, Imprt, Jtcs, Plub, Prit, Ptg, Ctg, T_dato, Tx, Stc, 
+    Vid, Cond, Condcc, Ejt, Mtrt, Rptr, Itp, Op, Detn, Itn, Trp, Cero, Lista, 
+    Cjt, Reserv, Gen, Hrd, Exc, Fnz, Rtn, Fcn, Rtr, Min, Strg, Ars, Sysm, Ot, 
+    Impr, Igual, Suma, Resta, Multiplicacion, Division, Op_logico, Op_relacional,
+    Op_atribucion, Op_incremento, Op_booleano, Parentesis_a, Parentesis_c,
+    Llave_a, Llave_c, Corchete_a, Corchete_c, P_coma, Coma, Punto, Verdadero,
+    Falso, Identificador, Numero_positivo, Numero_negativo, Cadena, IdentClasePaquete, 
+    ERROR;
+non terminal INICIO, SENTENCIA_CLASE, SENTENCIA, IMPRESION, INICIO_SENTECIA_IMPRESION, SENTECIA_IMPRESION, METODO_MAIN, 
+    DECLARACION, ASIGNACION, OPERACIONES, OP, DECLARACION_RPTR, COND, COND_CONDCC,MTRT, EJT_MTRT, RPTR, 
+    SENTENCIA_BOOLEANA, SENTENCIA_RPTR;
+
+//REGLAS DE PRODUCCION
+precedence left Suma, Resta; 
+precedence left Multiplicacion, Division;
+
+start with INICIO;
+
+INICIO ::= 
+    Pckg IdentClasePaquete P_coma Imprt Stc Jtcs P_coma Plub Ctg IdentClasePaquete Llave_a SENTENCIA_CLASE Llave_c |
+    Pckg IdentClasePaquete P_coma Plub Ctg IdentClasePaquete Llave_a SENTENCIA_CLASE Llave_c
+;
+SENTENCIA_CLASE ::=
+    SENTENCIA METODO_MAIN|
+    METODO_MAIN SENTENCIA |
+    SENTENCIA METODO_MAIN SENTENCIA |
+    SENTENCIA |
+    METODO_MAIN
+;
+SENTENCIA ::=
+    SENTENCIA IMPRESION |
+    IMPRESION |
+    SENTENCIA DECLARACION |
+    DECLARACION |
+    SENTENCIA ASIGNACION | 
+    ASIGNACION |
+    SENTENCIA COND | 
+    COND |
+    SENTENCIA COND_CONDCC |
+    COND_CONDCC |
+    SENTENCIA MTRT |
+    MTRT |
+    SENTENCIA EJT_MTRT |
+    EJT_MTRT |
+    SENTENCIA RPTR |
+    RPTR
+;
+METODO_MAIN ::=
+    Plub Stc Vid Min Parentesis_a Strg Ars Corchete_a Corchete_c Parentesis_c Llave_a SENTENCIA Llave_c
+;
+IMPRESION ::=
+    Sysm Punto Ot Punto Impr Parentesis_a INICIO_SENTECIA_IMPRESION SENTECIA_IMPRESION Parentesis_c P_coma
+;
+INICIO_SENTECIA_IMPRESION ::=
+    Cadena | 
+    Identificador |
+    Numero_positivo |
+    Numero_negativo
+;
+SENTECIA_IMPRESION ::=
+    Suma Cadena SENTECIA_IMPRESION |
+    Suma Identificador SENTECIA_IMPRESION |
+    Suma Numero_positivo SENTECIA_IMPRESION |
+    Suma Numero_negativo SENTECIA_IMPRESION |
+;
+DECLARACION ::= 
+    T_dato Identificador P_coma | 
+    T_dato Identificador Igual Numero_positivo P_coma |
+    T_dato Identificador Igual Numero_negativo P_coma |
+    T_dato Identificador Igual Cadena P_coma |
+    T_dato Identificador Igual Verdadero P_coma |
+    T_dato Identificador Igual Falso P_coma |  
+    Tx Identificador P_coma |
+    Tx Identificador Igual Cadena P_coma   
+;
+ASIGNACION ::=
+    //ASIGNACION COMUNES
+    Identificador Op_atribucion Numero_positivo P_coma |
+    Identificador Op_atribucion Numero_negativo P_coma |
+    Identificador Igual Verdadero P_coma |
+    Identificador Igual Falso P_coma | 
+    Identificador Igual Cadena P_coma |
+    Identificador Igual OPERACIONES P_coma
+;
+OPERACIONES ::=
+    OPERACIONES OP OPERACIONES | Parentesis_a OPERACIONES Parentesis_c | Resta OPERACIONES | Identificador | Numero_positivo | Numero_negativo
+;
+OP ::=
+    Suma | 
+    Resta |
+    Multiplicacion |
+    Division
+;
+
+//IF
+COND ::= Cond Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c
+;
+SENTENCIA_BOOLEANA ::= 
+    Op_booleano | 
+    Identificador Op_relacional Op_booleano |
+    Identificador Op_relacional Numero_positivo |
+    Identificador Op_relacional Numero_negativo |
+    Identificador Op_relacional Identificador |
+    Identificador Op_relacional Cadena |
+    Numero_positivo Op_relacional Numero_positivo |
+    Numero_negativo Op_relacional Numero_negativo |
+    Numero_negativo Op_relacional Numero_positivo |
+    Numero_positivo Op_relacional Numero_negativo |
+    Numero_positivo Op_relacional Identificador |
+    Numero_negativo Op_relacional Identificador |
+    Cadena Op_relacional Cadena
+;
+//IF - ELSE
+COND_CONDCC ::= Cond Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c Condcc Llave_a SENTENCIA Llave_c
+;
+//WHILE
+MTRT ::= Mtrt Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c
+;
+//DO - WHILE
+EJT_MTRT ::= Ejt Llave_a SENTENCIA Llave_c Mtrt Parentesis_a SENTENCIA_BOOLEANA Parentesis_c P_coma
+;
+//FOR
+RPTR ::= Rptr Parentesis_a SENTENCIA_RPTR Parentesis_c Llave_a SENTENCIA Llave_c
+;
+//SENTENCIA - FOR
+SENTENCIA_RPTR ::=
+    T_dato Identificador Igual Numero_positivo P_coma SENTENCIA_BOOLEANA P_coma DECLARACION_RPTR |
+    T_dato Identificador Igual Numero_negativo P_coma SENTENCIA_BOOLEANA P_coma DECLARACION_RPTR |
+    Identificador Igual Numero_positivo P_coma SENTENCIA_BOOLEANA P_coma DECLARACION_RPTR |
+    Identificador Igual Numero_negativo P_coma SENTENCIA_BOOLEANA P_coma DECLARACION_RPTR
+;
+//DECLARACION - FOR
+DECLARACION_RPTR ::= 
+    Identificador Op_atribucion Numero_positivo |
+    Identificador Op_atribucion Numero_negativo |
+    Identificador Op_incremento | 
+    Op_incremento Identificador
+;

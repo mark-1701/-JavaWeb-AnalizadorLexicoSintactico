@@ -1,0 +1,240 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-weight: lighter;
+}
+
+/*#F2B749*/
+
+h1 {
+    font-weight: 400;
+}
+
+h3 {
+    font-weight: normal;
+}
+
+/*MENU HEAD*/
+
+.head {
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 0 120px;
+    color: #0D0D0D;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: normal;
+}
+
+.head img {
+    height: 50px;
+}
+
+.hed ul {
+    list-style-type: none;
+
+}
+
+.head li {
+    margin-left: 20px;
+    display: inline-block;
+
+}
+
+.link {
+    color: black;
+    padding-bottom: 3px;
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.link-icon {
+    display: flex;
+    align-items: center;
+}
+
+.link-icon span{
+    font-size: 24px;
+    padding-bottom: 3px;
+}
+
+.link:hover {
+    border-bottom: 2px solid black;
+}
+
+/*BANNER DISENO*/
+
+header {
+    display: flex;
+    height: 500px;
+}
+
+.information {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+    width: 50%;
+    height: 100%;
+    padding: 50px 0 50px 80px;
+    box-sizing: border-box;
+    color: white; 
+}
+
+.information p {
+    font-size: 20px;
+}
+
+.btn {
+    text-align: center;
+    display: block;
+    padding: 10px 30px;
+    width: 50px;
+    color: black;
+    text-decoration: none;
+    background: white;
+    border-radius: 30px;
+}
+
+.imageBanner {
+    width: 100%;
+    background-image: url('../img/snorlaxNew.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0% 50%;
+}
+
+/*DISENO PADRE CATEGORIAS*/
+.category {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 120px;
+    gap: 30px;
+    height: 380px;
+}
+
+.category h1 {
+    font-size: 32px;
+}
+
+/*TARJETA PERSONAS*/
+.cards {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 30%;
+}
+
+.card img {
+    height: 220px;
+}
+
+/*FRASE*/
+.content-phrase {    
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    width: 100%;
+    padding: 60px 130px;
+    box-sizing: border-box;
+    background-color: #2e2e2e;
+}
+
+.content-phrase img{ 
+    height: 300px;   
+}
+
+.content-phrase div{ 
+    width: 700px;
+    font-size: 18px;
+    color: white;   
+}
+
+/*TARJETAS REQUISITOS*/
+.cards-requi {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-requi {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+    height: 300px;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #F2F2F2;
+}
+
+/*FOOTER DE LA PAGINA*/
+
+footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 440px;
+    padding: 60px 120px 30px;
+    background-color: #2e2e2e;
+    text-align: start;
+    color: #F2F2F2;
+}
+
+.cards-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+}
+
+.card-footer {
+    width: 22%;
+}
+
+.social-networks {
+    display: flex;
+    gap: 20px;
+}
+
+.social-networks i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    font-size: 28px;
+    color: #2e2e2e;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.copyright {
+    text-align: center;
+}
+
+/*ICONOS REQUISITOS*/
+.material-symbols-outlined {
+    font-size: 80px;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48
+}
+
+
+
+
