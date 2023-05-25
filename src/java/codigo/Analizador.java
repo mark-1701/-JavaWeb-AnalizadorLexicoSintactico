@@ -346,13 +346,14 @@ public class Analizador {
                         break;
                     case ERROR:
                         noErrores++;
+                        String fila = Integer.toString(cont);
                         if (!errorEncontrado) {
-                        resultado += "+----+--------------+-----------------------+--------------+----------+----------+\n";
-                        resultado += "| NO | CODIGO ERROR | DESCRIPCION DEL ERROR |  TIPO ERROR  | SIMBOLO  |  LINEA   |\n";
-                        resultado += "+----+--------------+-----------------------+--------------+----------+----------+\n";
+                            resultado += "+----+--------------+-----------------------+--------------+-----------+-----------+\n";
+                            resultado += "| NO | CODIGO ERROR | DESCRIPCION DEL ERROR |  TIPO ERROR  |   LINEA   |  SIMBOLO  |\n";
+                            resultado += "+----+--------------+-----------------------+--------------+-----------+-----------+\n";
                         }
-                        resultado += "| "+noErrores+"  |   NO: 00001  |  SIMBOLO NO DEFINIDO  | TIPO: LEXICO |    "+lexer.lexeme+"     | FILA: " + cont + " |\n";
-                        resultado += "+----+--------------+-----------------------+--------------+----------+----------+\n";
+                        resultado += "| " + noErrores + "  |   NO: 00001  |  SIMBOLO NO DEFINIDO  | TIPO: LEXICO |  FILA: " + cont + calculoEspacioConsola(fila, 3) + "|     " + lexer.lexeme + "     |\n";
+                        resultado += "+----+--------------+-----------------------+--------------+-----------+-----------+\n";
                         errorEncontrado = true;
                         break;
                 }
@@ -361,6 +362,29 @@ public class Analizador {
             System.out.println(e);
             return null;
         }
+    }
+
+    public String analizadorSintactico(String entrada) {
+        String ST = entrada;
+        Sintax s = new Sintax(new codigo.LexerCup(new StringReader(ST)));
+        String resultado;
+        try {
+            resultado = "";
+            s.parse();
+            resultado += "FELICIDADES NO SE HAN ENCONTRADO ERRORES SINTACTICOS";
+        } catch (Exception ex) {
+            Symbol sym = s.getS();
+            String fila = Integer.toString(sym.right + 1);
+            String texto = (String) sym.value;
+            resultado = "";
+            resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
+            resultado += "| NO | CODIGO ERROR | DESCRIPCION DEL ERROR |    TIPO ERROR    |   LINEA   |   TEXTO   |\n";
+            resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
+            resultado += "| x  |   NO: 00001  |  ESTRUCTURA ERRONEA   | TIPO: SINTACTICO |     " + (sym.right + 1) + calculoEspacioConsola(fila, 6) + "|     " + sym.value + calculoEspacioConsola(texto, 6) + "|\n";
+            resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
+//            resultado += "Error de sintaxis. Linea: " + (sym.right + 1) + " Columna: " + (sym.left + 1) + ", Texto: \"" + sym.value + "\"";
+        }
+        return resultado;
     }
 
     public String calculoEspacios(String entrada, int tipo) {
@@ -382,25 +406,19 @@ public class Analizador {
         }
         return entrada;
     }
-    
-    public String analizadorSintactico(String entrada) {
-        String ST = entrada;
-        Sintax s = new Sintax(new codigo.LexerCup(new StringReader(ST)));
-        String resultado;
-        try {
-            resultado = "";
-            s.parse();
-            resultado += "FELICIDADES NO SE HAN ENCONTRADO ERRORES SINTACTICOS";
-        } catch (Exception ex) {
-            Symbol sym = s.getS();
-            resultado = "";
-            resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
-            resultado += "| NO | CODIGO ERROR | DESCRIPCION DEL ERROR |    TIPO ERROR    |   LINEA   |   TEXTO   |\n";
-            resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
-            resultado += "| x  |   NO: 00001  |  ESTRUCTURA ERRONEA   | TIPO: SINTACTICO |     " + (sym.right + 1) + "     |     " + sym.value + " |\n";
-            resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n"; 
-//            resultado += "Error de sintaxis. Linea: " + (sym.right + 1) + " Columna: " + (sym.left + 1) + ", Texto: \"" + sym.value + "\"";
+
+    public String calculoEspacioConsola(String entrada, int espaciosRequeridos) {
+        String espacio = "";
+        for (int i = 0; i < espaciosRequeridos; i++) {
+            espacio += " ";
         }
-        return resultado;
+        if (espacio.length() >= entrada.length()) {
+            for (int i = 0; i < entrada.length(); i++) {
+                espacio = espacio.substring(0, espacio.length() - 1);
+            }
+        } else {
+            return "";
+        }
+        return espacio;
     }
 }
