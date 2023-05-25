@@ -335,7 +335,7 @@ public class Analizador {
                 Tokens token = lexer.yylex();
                 if (token == null) {
                     if (!errorEncontrado) {
-                        resultado += "FELICIDADES NO SE HAN ENCONTRADO ERRORES";
+                        resultado += "FELICIDADES NO SE HAN ENCONTRADO ERRORES LEXICOS";
                     }
                     return resultado;
                 }
@@ -390,7 +390,7 @@ public class Analizador {
         try {
             resultado = "";
             s.parse();
-            resultado += "Analisis realizado correctamente";
+            resultado += "FELICIDADES NO SE HAN ENCONTRADO ERRORES SINTACTICOS";
         } catch (Exception ex) {
             Symbol sym = s.getS();
             resultado = "";
