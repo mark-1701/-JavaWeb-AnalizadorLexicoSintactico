@@ -375,7 +375,12 @@ public class Analizador {
         } catch (Exception ex) {
             Symbol sym = s.getS();
             String fila = Integer.toString(sym.right + 1);
-            String texto = (String) sym.value;
+            String texto = "";
+            if ((sym.value) == null) {
+                texto = "null";
+            } else {
+                texto = (String) sym.value;
+            }
             resultado = "";
             resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
             resultado += "| NO | CODIGO ERROR | DESCRIPCION DEL ERROR |    TIPO ERROR    |   LINEA   |   TEXTO   |\n";

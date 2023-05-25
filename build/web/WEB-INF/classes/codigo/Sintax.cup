@@ -24,7 +24,7 @@ terminal Comillas, Pckg, Imprt, Jtcs, Plub, Prit, Ptg, Ctg, T_dato, Tx, Stc,
     Falso, Identificador, Numero_positivo, Numero_negativo, Cadena, IdentClasePaquete, 
     ERROR;
 non terminal INICIO, SENTENCIA_CLASE, SENTENCIA, IMPRESION, INICIO_SENTECIA_IMPRESION, SENTECIA_IMPRESION, METODO_MAIN, 
-    DECLARACION, ASIGNACION, OPERACIONES, OP, DECLARACION_RPTR, COND, COND_CONDCC,MTRT, EJT_MTRT, RPTR, 
+    DECLARACION, ASIGNACION, OPERACIONES, OP, DECLARACION_RPTR, COND, COND_COMPLEMENTOS, COND_ANIDADO, COND_CONDCC,MTRT, EJT_MTRT, RPTR, 
     SENTENCIA_BOOLEANA, SENTENCIA_RPTR;
 
 //REGLAS DE PRODUCCION
@@ -53,8 +53,6 @@ SENTENCIA ::=
     ASIGNACION |
     SENTENCIA COND | 
     COND |
-    SENTENCIA COND_CONDCC |
-    COND_CONDCC |
     SENTENCIA MTRT |
     MTRT |
     SENTENCIA EJT_MTRT |
@@ -110,8 +108,20 @@ OP ::=
 ;
 
 //IF
-COND ::= Cond Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c
+COND ::= 
+    Cond Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c |
+    Cond Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c COND_COMPLEMENTOS
 ;
+//IF COMPLEMENTOS
+COND_COMPLEMENTOS ::= COND_ANIDADO COND_COMPLEMENTOS | COND_ANIDADO | COND_CONDCC 
+;
+//IF ANIDADO
+COND_ANIDADO ::= Condcc Cond Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c
+;
+//IF - ELSE
+COND_CONDCC ::= Condcc Llave_a SENTENCIA Llave_c
+;
+
 SENTENCIA_BOOLEANA ::= 
     Op_booleano | 
     Identificador Op_relacional Op_booleano |
@@ -127,9 +137,7 @@ SENTENCIA_BOOLEANA ::=
     Numero_negativo Op_relacional Identificador |
     Cadena Op_relacional Cadena
 ;
-//IF - ELSE
-COND_CONDCC ::= Cond Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c Condcc Llave_a SENTENCIA Llave_c
-;
+
 //WHILE
 MTRT ::= Mtrt Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c
 ;
