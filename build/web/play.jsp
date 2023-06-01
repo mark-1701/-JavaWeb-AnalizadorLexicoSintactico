@@ -46,7 +46,7 @@
             </div>
         </header>
 
-        <input type="checkbox" id="btn-menu" />
+        <input type="checkbox" id="btn-menu" checked/>
 
         <div class="menu-side">
             <div class="cards-opciones">

@@ -7,6 +7,10 @@ import java_cup.runtime.Symbol;
 
 public class Analizador {
 
+    String resultado = "";
+    boolean error = false;
+    int numeroErrores = 0;
+
     public String analizadorLexico(String entrada) {
         try {
             int cont = 1;
@@ -21,7 +25,7 @@ public class Analizador {
                     return resultado;
                 }
                 switch (token) {
-                    case Linea:
+                    case S_linea:
                         cont++;
                         resultado += "LINEA " + cont + "\n";
                         break;
@@ -341,7 +345,7 @@ public class Analizador {
                 }
 
                 switch (token) {
-                    case Linea:
+                    case S_linea:
                         cont++;
                         break;
                     case ERROR:
@@ -364,30 +368,16 @@ public class Analizador {
         }
     }
 
-    public String analizadorSintactico(String entrada) {
-        String ST = entrada;
+    public String analizadorSintactico(String ST) {
         Sintax s = new Sintax(new codigo.LexerCup(new StringReader(ST)));
-        String resultado;
         try {
-            resultado = "";
             s.parse();
-            resultado += "FELICIDADES NO SE HAN ENCONTRADO ERRORES SINTACTICOS";
+            if (!error) {
+                resultado += "FELICIDADES NO SE HAN ENCONTRADO ERRORES SINTACTICOS";
+            }
         } catch (Exception ex) {
             Symbol sym = s.getS();
-            String fila = Integer.toString(sym.right + 1);
-            String texto = "";
-            if ((sym.value) == null) {
-                texto = "null";
-            } else {
-                texto = (String) sym.value;
-            }
-            resultado = "";
-            resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
-            resultado += "| NO | CODIGO ERROR | DESCRIPCION DEL ERROR |    TIPO ERROR    |   LINEA   |   TEXTO   |\n";
-            resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
-            resultado += "| x  |   NO: 00001  |  ESTRUCTURA ERRONEA   | TIPO: SINTACTICO |     " + (sym.right + 1) + calculoEspacioConsola(fila, 6) + "|     " + sym.value + calculoEspacioConsola(texto, 6) + "|\n";
-            resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
-//            resultado += "Error de sintaxis. Linea: " + (sym.right + 1) + " Columna: " + (sym.left + 1) + ", Texto: \"" + sym.value + "\"";
+            erroresSintaxis(ST, sym);
         }
         return resultado;
     }
@@ -425,5 +415,49 @@ public class Analizador {
             return "";
         }
         return espacio;
+    }
+
+    public void erroresSintaxis(String ST, Symbol sym) {
+        try {
+            numeroErrores++;
+            
+            int fila = sym.right + 1;
+            String filaTexto = Integer.toString(sym.right + 1);
+            String texto = "";
+            if (sym.value == null) {
+                texto = "null";
+            } else if ((sym.value).equals("\n")) {
+                texto = "\\n";
+            } else {
+                texto = (String) sym.value;
+            }
+
+            if (!error) {
+                resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
+                resultado += "| NO | CODIGO ERROR | DESCRIPCION DEL ERROR |    TIPO ERROR    |   LINEA   |   TEXTO   |\n";
+                resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
+                resultado += "| " + numeroErrores + "  |   NO: 00001  |  ESTRUCTURA ERRONEA   | TIPO: SINTACTICO |     " + filaTexto + calculoEspacioConsola(filaTexto, 6) + "|     " + texto + calculoEspacioConsola(texto, 6) + "|\n";
+                resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
+                error = true;
+            } else {
+                resultado += "| " + numeroErrores + "  |   NO: 00001  |  ESTRUCTURA ERRONEA   | TIPO: SINTACTICO |     " + filaTexto + calculoEspacioConsola(filaTexto, 6) + "|     " + texto + calculoEspacioConsola(texto, 6) + "|\n";
+                resultado += "+----+--------------+-----------------------+------------------+-----------+-----------+\n";
+            }
+
+            //MANDA A LLAMAR LA FUNCION QUE VA A QUITAR LA LINEA CON EL ERROR
+            String NuevaEntrada = eliminarLinea(ST, fila - 1);
+            //SI OCURRE UN ERROR VA A LLAMAR LA MISMA FUNCION PARA SEGUIR ENCONTRANDO ERRORES
+            if (fila != 0) {
+                analizadorSintactico(NuevaEntrada);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    String eliminarLinea(String ST, int numeroLineaEliminar) {
+        String[] entrada = ST.split("\n");
+        entrada[numeroLineaEliminar] = "";
+        return String.join("\n", entrada);
     }
 }

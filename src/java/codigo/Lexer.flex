@@ -14,7 +14,7 @@ falso = [Ff][Aa][Ll][Ss][Oo]
 %%
 {espacio} {/*Ignore*/}
 ( "--*"(.)*"--*" ) {/*Ignore*/}
-( "\n" ) {return Linea;}
+( "\n" ) {return S_linea;}
 ( "\"" ) {lexeme=yytext(); return Comillas;}
 //PAQUETE
 ( pckg ) {lexeme=yytext(); return Pckg;}

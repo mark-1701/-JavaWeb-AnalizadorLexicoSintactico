@@ -1,7 +1,7 @@
 package codigo;
 
 public enum Tokens {
-    Linea,
+    S_linea,
     Comillas,
     Pckg,
     Imprt,

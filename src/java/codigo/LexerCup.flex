@@ -9,7 +9,7 @@ import java_cup.runtime.Symbol;
 %char
 L=[a-zA-Z_]+
 D=[0-9]+
-espacio=[ ,\t,\r,\n]+
+espacio=[ ,\t,\r]+
 verdadero = [Vv][Ee][Rr][Dd][Aa][Dd][Ee][Rr][Oo]
 falso = [Ff][Aa][Ll][Ss][Oo]
 %{
@@ -24,6 +24,7 @@ falso = [Ff][Aa][Ll][Ss][Oo]
 
 {espacio} {/*Ignore*/}
 ( "--*"(.)*"--*" ) {/*Ignore*/}
+( "\n" ) {return new Symbol(sym.S_linea, yychar, yyline, yytext());}
 ( "\"" ) {return new Symbol(sym.Comillas, yychar, yyline, yytext());}
 
 //PAQUETE
